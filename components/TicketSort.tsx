@@ -1,4 +1,4 @@
-import { TicketList, InputSort, LabelSort } from "../styles/ticketList";
+import { TicketList, InputSort, LabelSort, Ticket } from "../styles/ticketList";
 import { sortList } from "../utils/lists";
 import { List } from "../interfaces/List";
 
@@ -9,11 +9,12 @@ export default function TicketSort(): JSX.Element {
         <InputSort
           id={oper.id}
           type="radio"
-          name={oper.id}
+          name="titleSort"
           value={oper.id}
         />
         <LabelSort htmlFor={oper.id}>{oper.checkName}</LabelSort>
       </>
     ))}
+    <Ticket>Aviasales Ticket</Ticket>
   </TicketList>;
 }

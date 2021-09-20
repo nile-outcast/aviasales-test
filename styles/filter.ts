@@ -6,6 +6,7 @@ export const FilterDiv = styled.div`
   width: 230px;
   padding-top: 10px;
   border-radius: 5px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
 export const FilterTitle = styled.div`
@@ -36,9 +37,10 @@ export const FilterLabel = styled.label`
     display: inline-block;
     width: 20px;
     height: 20px;
+    margin-right: 10px;
     border: 1px solid #9ABBCE;
     border-radius: 2px;
-    margin-right: 10px;
+    box-sizing: border-box;
     background-repeat: no-repeat;
     background-position: center;
   }

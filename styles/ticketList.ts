@@ -11,7 +11,7 @@ export const InputSort = styled.input`
 `;
 
 export const LabelSort = styled.label`
-  display: inline-flex;
+  display: inline-block;
   user-select: none;
   font-weight: bold;
   line-height: 50px;
@@ -19,6 +19,12 @@ export const LabelSort = styled.label`
   width: 170px;
   height: 50px;
   border: 1px solid #9ABBCE;
+  border-left: ${(props) => { if (props.htmlFor == "fast") return "0"; }};
+  border-right: ${(props) => { if (props.htmlFor == "fast") return "0"; }};
+  border-radius: ${(props) => (
+    props.htmlFor == "fast" ? "" : (
+      props.htmlFor == "cheap" ? "5px 0 0 5px" : "0 5px 5px 0"
+    ))};
   background-color: white;
 
   ${InputSort}:checked + & {
@@ -32,4 +38,10 @@ export const LabelSort = styled.label`
   }
 `;
 
-export const Ticket = ``;
+export const Ticket = styled.table`
+  width: 510px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+`;

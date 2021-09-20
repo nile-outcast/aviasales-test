@@ -4,11 +4,10 @@ import TicketSort from '../components/TicketSort';
 import { Ticket } from '../interfaces/Ticket';
 
 type Props = {
-  tickets: Ticket[],
-  stop: boolean
+  tickets: Ticket[]
 };
 
-const Home: React.FC<Props> = () => (
+const Home: React.FC<Props> = ({ tickets }) => (
   <>
     <Filter />
     <TicketSort />
