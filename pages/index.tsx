@@ -8,7 +8,7 @@ type Props = {
   stop: boolean
 };
 
-const Home: React.FC<Props> = ({ tickets }) => (
+const Home: React.FC<Props> = () => (
   <>
     <Filter />
     <TicketSort />
