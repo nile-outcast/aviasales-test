@@ -1,3 +1,4 @@
+import { useEffect, useRef, MouseEvent } from 'react';
 import { GetStaticProps } from 'next';
 import Filter from "../components/Filter";
 import TicketSort from '../components/TicketSort';
@@ -7,13 +8,25 @@ type Props = {
   tickets: Ticket[]
 };
 
-const Home: React.FC<Props> = ({ tickets }) => (
-  <>
-    <Filter />
-    <TicketSort />
-  </>
-);
+export const Home: React.FC<Props> = () => {
+  const inputRef = useRef(null);
 
+  useEffect(() => {
+    inputRef.current.click();
+  }, []);
+
+  function handlerOnClickInput(event: MouseEvent<HTMLInputElement>): MouseEvent<HTMLInputElement> {
+    console.log(event.currentTarget.id);
+    return;
+  }
+
+  return <>
+    <Filter />
+    <TicketSort
+      handlerOnClick={handlerOnClickInput}
+      inputRef={inputRef} />
+  </>;
+};
 
 export const getStaticProps: GetStaticProps = async () => {
 
@@ -48,17 +61,18 @@ export const getStaticProps: GetStaticProps = async () => {
 
   //let tickets = null;
 
-  const getTicket = async (url) => {
+  const getTickets = async (url) => {
     const rest = await fetch(url);
     const res = await rest.json();
 
     if (!res.stop) {
       return res.tickets;
+    } else {
+      return res.tickets;
     }
-    await getTicket(url);
   };
 
-  const tickets = await getTicket(url);
+  const tickets = await getTickets(url);
 
   return { props: { tickets } };
 };

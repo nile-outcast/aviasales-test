@@ -38,9 +38,8 @@ export const LabelSort = styled.label`
   }
 `;
 
-export const Ticket = styled.table`
+export const TicketTable = styled.div`
   width: 510px;
-  margin-top: 20px;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   background-color: white;
