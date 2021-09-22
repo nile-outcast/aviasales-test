@@ -1,21 +1,30 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
+import { ReactNode } from "react";
 import { Ticket } from '../../interfaces/Ticket';
-import { TicketTable } from "../../styles/ticketList";
+import { TicketTable, Button } from "../../styles/ticketForm";
+import Filter from "../../components/Filter";
+import TicketSort from '../../components/TicketSort';
 
 type Props = {
+  children: ReactNode;
   tickets: Ticket[]
 };
 
-const TicketForm: React.FC<Props> = ({ tickets }) => {
+export default function TicketForm({ tickets }: Props): JSX.Element {
 
-  return (
-    <form>
-      <TicketTable></TicketTable>
-      <button>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ</button>
-    </form>
-  );
-};
+  //console.log(tickets);
 
+  return <>
+    <Filter />
+    <TicketSort>
+      <>
+        <TicketTable></TicketTable>
+        <Button>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ</Button>
+      </>
+    </TicketSort>
+  </>;
+}
+/*
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch('https://front-test.beta.aviasales.ru/search');
   const searchId = await res.json();
@@ -29,38 +38,30 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
-  const res = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${params.id}`);
-  const obj = await res.json();
-  const tickets = obj.tickets;
+  const getTic = (url) => {
+    return fetch(url)
+      .then(res => {
+        if (res.status == 404) return;
+        if (res.status == 500) {
+          new Promise(resolve => setTimeout(resolve, 1000));
+          return getTic(url);
+        }
+        if (res.status != 200) {
+          new Promise(resolve => setTimeout(resolve, 1000));
+          return getTic(url);
+        }
+        return res.json();
+      })
+      .then(json => {
+        if (!json.stop) {
+          return getTic(url);
+        }
+        return json.tickets;
+      });
+  };
 
-  /*
-        let status = false;
-        let tickets = null;
-      
-        do {
-          const resBody = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId.searchId}`)
-            .then((res) => res.json());
-          //const mass = await resBody.json();
-          status = resBody.stop;
-          tickets = resBody.tickets;
-        } while (!status);
-  /*
-    const url = `https://front-test.beta.aviasales.ru/tickets?searchId=${params.id}`;
-  
-    const getTickets = async (url) => {
-      const rest = await fetch(url);
-      const res = await rest.json();
-  
-      if (!res.stop) {
-        return res.tickets;
-      } else {
-        return res.tickets;
-      }
-    };
-  
-    const tickets = await getTickets(url);
-  */
+  const tickets = await getTic('https://front-test.beta.aviasales.ru/tickets?searchId=' + params.id);
+
   return { props: { tickets } };
 };
-
-export default TicketForm;
+*/

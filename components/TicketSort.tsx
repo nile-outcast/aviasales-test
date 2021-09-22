@@ -1,40 +1,31 @@
-import { Ref, MouseEvent } from "react";
-import { TicketList, InputSort, LabelSort } from "../styles/ticketList";
-import { sortList } from "../utils/lists";
-import { List } from "../interfaces/List";
+import { useEffect, useRef, MouseEvent, ReactNode } from 'react';
+import { SortConteiner } from "../styles/ticketList";
+import { Ticket } from '../interfaces/Ticket';
+import SortTitle from './SortTitle';
 
 type Props = {
-  inputRef: Ref<HTMLInputElement>;
-  handlerOnClick(event: MouseEvent<HTMLInputElement>): MouseEvent<HTMLInputElement>;
+  children: ReactNode
+  tickets?: Ticket[]
+  status?: boolean
 };
 
 export default function TicketSort(props: Props): JSX.Element {
-  return <TicketList>
-    {sortList.map((oper: List) => {
-      if (oper.id == "cheap") {
-        return <>
-          <InputSort
-            id={oper.id}
-            type="radio"
-            name="titleSort"
-            value={oper.id}
-            onClick={props.handlerOnClick}
-            ref={props.inputRef}
-          />
-          <LabelSort htmlFor={oper.id}>{oper.checkName}</LabelSort>
-        </>;
-      } else {
-        return <>
-          <InputSort
-            id={oper.id}
-            type="radio"
-            name="titleSort"
-            value={oper.id}
-            onClick={props.handlerOnClick}
-          />
-          <LabelSort htmlFor={oper.id}>{oper.checkName}</LabelSort>
-        </>;
-      }
-    })}
-  </TicketList>;
+  const inputRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    inputRef.current.click();
+  }, []);
+
+  function handlerOnClickInput(event: MouseEvent<HTMLLIElement>): MouseEvent<HTMLLIElement> {
+    console.log(event.currentTarget.id);
+    return;
+  }
+
+  return <SortConteiner>
+    <SortTitle
+      handlerOnClick={handlerOnClickInput}
+      inputRef={inputRef}
+    />
+    {props.children}
+  </SortConteiner>;
 }
