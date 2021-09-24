@@ -1,10 +1,24 @@
 import styled from "styled-components";
 
-export const TicketTable = styled.div`
+export const TicketTable = styled.table`
+  user-select: none;
   width: 510px;
+  margin-top: 20px;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   background-color: white;
+`;
+
+export const TicketRow = styled.tr`
+`;
+
+export const TicketCell = styled.td`
+
+`;
+
+
+export const TicketCellHead = styled.td`
+
 `;
 
 export const Button = styled.button`

@@ -1,67 +1,87 @@
-import { GetStaticProps, GetStaticPaths } from 'next';
-import { ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { Ticket } from '../../interfaces/Ticket';
-import { TicketTable, Button } from "../../styles/ticketForm";
+import { Loading, Result } from "../../styles/ticketSearch";
 import Filter from "../../components/Filter";
 import TicketSort from '../../components/TicketSort';
+import TicketList from "../../components/TicketList";
 
-type Props = {
-  children: ReactNode;
-  tickets: Ticket[]
+type Data = {
+  tickets: Ticket[];
+  isLoading: boolean
 };
 
-export default function TicketForm({ tickets }: Props): JSX.Element {
+export default function TicketSearch(): JSX.Element {
 
-  //console.log(tickets);
+  const [{ tickets, isLoading }, setData] = useState<Data>({
+    tickets: [],
+    isLoading: true,
+  });
+
+  const [className, setClassName] = useState<string>('');
+
+  useEffect(() => {
+
+    const getTic = async () => {
+
+      const resPath = await fetch('https://front-test.beta.aviasales.ru/search');
+      const path = await resPath.json();
+
+      const getData = async (path) => {
+        //console.log(path);
+        try {
+          const res = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${path.searchId}`);
+
+          if (!res.ok) {
+            setData((prev) => ({
+              tickets: prev.tickets,
+              isLoading: true,
+            }));
+            await getData(path);
+          }
+
+          const data = await res.json();
+
+          if (data.stop) {
+            setData((prev) => ({
+              tickets: prev.tickets.concat(data.tickets),
+              isLoading: false,
+            }));
+
+            //console.log(data.stop);
+          } else {
+            setData((prev) => ({
+              tickets: prev.tickets.concat(data.tickets),
+              isLoading: true,
+            }));
+            await getData(path);
+          }
+        } catch (err) {
+          console.log('Поймал!' + err);
+        }
+      };
+
+      await getData(path);
+    };
+
+    getTic();
+    //setClassName(() => 'visible');
+    //setTimeout(() => setClassName(() => ''), 5000);
+  }, []);
+
+  console.log(tickets);
 
   return <>
     <Filter />
     <TicketSort>
-      <>
-        <TicketTable></TicketTable>
-        <Button>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ</Button>
-      </>
+      {(isLoading) ?
+        <Loading>L O A D I N G . . .</Loading> :
+        <>
+          <Result className={className}>
+            Всего найдено {tickets.length} билетов
+          </Result>
+          <TicketList tickets={tickets} />
+        </>
+      }
     </TicketSort>
   </>;
 }
-/*
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch('https://front-test.beta.aviasales.ru/search');
-  const searchId = await res.json();
-
-  const paths = [
-    { params: { id: searchId.searchId } }
-  ];
-
-  return { paths, fallback: true };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-
-  const getTic = (url) => {
-    return fetch(url)
-      .then(res => {
-        if (res.status == 404) return;
-        if (res.status == 500) {
-          new Promise(resolve => setTimeout(resolve, 1000));
-          return getTic(url);
-        }
-        if (res.status != 200) {
-          new Promise(resolve => setTimeout(resolve, 1000));
-          return getTic(url);
-        }
-        return res.json();
-      })
-      .then(json => {
-        if (!json.stop) {
-          return getTic(url);
-        }
-        return json.tickets;
-      });
-  };
-
-  const tickets = await getTic('https://front-test.beta.aviasales.ru/tickets?searchId=' + params.id);
-
-  return { props: { tickets } };
-};
-*/

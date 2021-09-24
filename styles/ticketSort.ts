@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const SortConteiner = styled.div`
+  position: relative;
   float: right;
   width: 510px;
   margin-left: 20px;

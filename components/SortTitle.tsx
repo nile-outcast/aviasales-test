@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { MouseEvent, RefObject, } from 'react';
-import { UlSort, LiSort } from "../styles/ticketList";
+import { UlSort, LiSort } from "../styles/ticketSort";
 import { sortList } from "../utils/lists";
 import { List } from "../interfaces/List";
 
@@ -11,7 +11,9 @@ type Props = {
 };
 
 export default function SortTitle(props: Props): JSX.Element {
+
   const router = useRouter();
+
   return <UlSort>
     {sortList.map((oper: List) => {
       if (oper.id == "cheap") {
@@ -51,5 +53,5 @@ export default function SortTitle(props: Props): JSX.Element {
         );
       }
     })}
-  </UlSort >;
+  </UlSort>;
 }
