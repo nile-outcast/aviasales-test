@@ -15,7 +15,6 @@ export const UlSort = styled.ul`
 export const LiSort = styled.li`
   display: inline-block;
   user-select: none;
-  font-weight: bold;
   line-height: 50px;
   text-align: center;
   width: 170px;

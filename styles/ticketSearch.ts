@@ -5,14 +5,15 @@ export const Result = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-weight: bold;
   line-height: 50px;
   height: 50px;
-  padding 0 10px;
+  padding 0 30px;
   margin-top: 10px;
   border: 1px solid #9ABBCE;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  background: #F3F7FA;
+  opacity: .7;
 
   &.visible {
     display: inline-block;
@@ -20,7 +21,6 @@ export const Result = styled.div`
 `;
 
 export const Loading = styled.div`
-  font-weight: bold;
   line-height: 50px;
   text-align: center;
   width: 510px;

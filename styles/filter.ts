@@ -4,6 +4,7 @@ export const FilterDiv = styled.div`
   float: left;
   background-color: white;
   width: 230px;
+  height: 256px;
   padding-top: 10px;
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
@@ -11,7 +12,6 @@ export const FilterDiv = styled.div`
 
 export const FilterTitle = styled.div`
   padding: 10px 20px;
-  font-weight: bold;
   user-select: none;
 `;
 
@@ -24,12 +24,14 @@ export const FilterLabel = styled.label`
   align-items: center;
   user-select: none;
   font-size: 13px;
+  font-weight: normal;
   line-height: 20px;
   width: 230px;
   padding: 10px 20px;
 
   &:last-child {
     padding-bottom: 20px;
+    border-radius: 0 0 5px 5px;
   }
 
   &::before {

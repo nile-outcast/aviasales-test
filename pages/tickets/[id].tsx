@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Ticket } from '../../interfaces/Ticket';
 import { Loading, Result } from "../../styles/ticketSearch";
 import Filter from "../../components/Filter";
@@ -64,8 +64,8 @@ export default function TicketSearch(): JSX.Element {
     };
 
     getTic();
-    //setClassName(() => 'visible');
-    //setTimeout(() => setClassName(() => ''), 5000);
+    setClassName(() => 'visible');
+    setTimeout(() => setClassName(() => ''), 5000);
   }, []);
 
   console.log(tickets);
