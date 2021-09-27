@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const FilterDiv = styled.div`
-  float: left;
+  position: absolute;
+  top: 0;
+  left: -250px;
   background-color: white;
   width: 230px;
   height: 256px;
@@ -22,17 +24,26 @@ export const FilterInput = styled.input`
 export const FilterLabel = styled.label`
   display: inline-flex;
   align-items: center;
+
+  &:last-child {
+    padding-bottom: 10px;
+    border-radius: 0 0 5px 5px;
+  }
+
+  &:hover {
+    background-color: #F1FCFF;
+  }
+`;
+
+export const FilterSpan = styled.span`
+  display: inline-flex;
+  align-items: center;
   user-select: none;
   font-size: 13px;
   font-weight: normal;
   line-height: 20px;
   width: 230px;
   padding: 10px 20px;
-
-  &:last-child {
-    padding-bottom: 20px;
-    border-radius: 0 0 5px 5px;
-  }
 
   &::before {
     content: '';
@@ -47,12 +58,8 @@ export const FilterLabel = styled.label`
     background-position: center;
   }
 
-  ${FilterInput}:checked + &::before {
+   ${FilterInput}:checked + &::before {
     border-color: #2196F3;
     background-image: url("/shape.svg");
-  }
-
-  &:hover {
-    background-color: #F1FCFF;
   }
 `;

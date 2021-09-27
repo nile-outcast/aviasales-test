@@ -5,6 +5,7 @@ export const Result = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 13px;
   line-height: 50px;
   height: 50px;
   padding 0 30px;
@@ -13,7 +14,6 @@ export const Result = styled.div`
   border-radius: 5px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   background: #F3F7FA;
-  opacity: .7;
 
   &.visible {
     display: inline-block;

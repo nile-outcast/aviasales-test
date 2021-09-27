@@ -1,35 +1,30 @@
-import { FilterInput, FilterLabel, FilterDiv, FilterTitle } from "../styles/filter";
+import React, { ChangeEvent } from "react";
+import { FilterInput, FilterLabel, FilterDiv, FilterTitle, FilterSpan } from "../styles/filter";
 import { filterList } from "../utils/lists";
-import { List } from "../interfaces/List";
-import { useState } from "react";
+import { List, FilterList } from "../interfaces/List";
 
-export default function Filter(): JSX.Element {
-  const [filter, setFilter] = useState({
-    allStop: true,
-    withoutStop: true,
-    oneStop: true,
-    twoStop: true,
-    threeStop: true,
-  });
+type Props = {
+  filter: FilterList,
+  handlerOnChange(even: ChangeEvent<HTMLInputElement>): void,
+};
 
-  const handlerOnChangeFilter = (even) => {
-    console.log(filter);
-  };
+export default function Filter({ filter, handlerOnChange }: Props): JSX.Element {
 
-  return <FilterDiv
-  >
-    <FilterTitle>КОЛИЧЕСТВО ПЕРЕСАДОК</FilterTitle>
-    {filterList.map((oper: List) => (
-      <>
-        <FilterInput
-          id={oper.id}
-          type="checkbox"
-          name={oper.id}
-          checked={filter[oper.id]}
-          onChange={handlerOnChangeFilter}
-        />
-        <FilterLabel htmlFor={oper.id}>{oper.checkName}</FilterLabel>
-      </>
-    ))}
-  </FilterDiv >;
+  return (
+    <FilterDiv>
+      <FilterTitle>КОЛИЧЕСТВО ПЕРЕСАДОК</FilterTitle>
+      {filterList.map((oper: List) => (
+        <FilterLabel key={oper.id}>
+          <FilterInput
+            id={oper.id}
+            type="checkbox"
+            name={oper.id}
+            checked={filter[oper.id]}
+            onChange={handlerOnChange}
+          />
+          <FilterSpan>{oper.checkName}</FilterSpan>
+        </FilterLabel>
+      ))}
+    </FilterDiv >
+  );
 }

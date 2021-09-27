@@ -1,74 +1,53 @@
 import { useRouter } from 'next/router';
-import { useState } from "react";
-import { sortTickets } from "../utils/functions";
-import { TicketTable, TicketRow, TicketCellHead, Button } from "../styles/tickeList";
+import { useContext, useMemo } from "react";
+import TicketTemplate from './TicketTemplate';
+import { Button } from "../styles/tickeList";
+import { filterContext, buttonContext } from "../utils/Context";
+import { getSortTickets } from "../utils/functions";
 import { Ticket } from '../interfaces/Ticket';
-import TicketDetails from './TicketDetails';
 
 type Props = {
   tickets: Ticket[];
 };
 
-type Sort = {
-  sortTickets: Ticket[];
-};
-
 export default function TicketList({ tickets }: Props): JSX.Element {
-  //const [sortTickets, setSortTickets] = useState<Sort>();
 
-  const [{ ticketsCount, routerPath }, setTicketsCount] = useState({
-    ticketsCount: 5,
-    routerPath: 'cheap',
-
-  });
+  const filter = useContext(filterContext);
+  const filterValues = useMemo(() => Object.values(filter), [filter]);
 
   const router = useRouter();
   const path = router.query.id as string;
-  sortTickets(path, tickets);
+  const sortTickets: Ticket[] = useMemo(() => getSortTickets(path, tickets), [path, tickets]);
 
-  /*
-    if (path === 'cheap') {
-      tickets.sort((a: Ticket, b: Ticket) => a.price - b.price);
-    }
-  
-    if (path === 'fast') {
-      tickets.sort((a: Ticket, b: Ticket) => (a.segments[0].duration + a.segments[1].duration) - (b.segments[0].duration + b.segments[1].duration));
-    }
-  
-    if (path === 'optimal') {
-      tickets.sort((a: Ticket, b: Ticket) => (a.price + a.segments[0].duration + a.segments[1].duration) - (b.price + b.segments[0].duration + b.segments[1].duration));
-    }
-  */
-  const handlerOnClickButton = () => {
-    if (path == routerPath) {
-      setTicketsCount(prev => ({
-        ticketsCount: prev.ticketsCount + 5,
-        routerPath: prev.routerPath,
-      }));
-    } else {
-      setTicketsCount(() => ({
-        ticketsCount: 5,
-        routerPath: path,
-      }));
-    }
-  };
+  const [ticketsCount, setTicketsCount] = useContext(buttonContext);
 
-  /*  setSortTickets(() => ({
-      sortTickets: sortTickets
-    }));
+  function handlerOnClickButton(): void {
+    setTicketsCount((prev: number) => prev + 5);
   }
-*/
-  const first = tickets[0];
 
   return <>
-    <TicketTable>
-      <TicketRow>
-        <TicketCellHead>{first.price} P</TicketCellHead>
-        <TicketCellHead></TicketCellHead>
-      </TicketRow>
-      <TicketDetails segments={first.segments[0]} />
-      <TicketDetails segments={first.segments[1]} />
-    </TicketTable>
+    {sortTickets.reduce((obj, ticket, index) => {
+      if (obj.added < ticketsCount) {
+        if (!filterValues.includes(true)) {
+          obj.selectedTickets.push(
+            < TicketTemplate
+              key={index}
+              ticket={ticket}
+            />
+          );
+          obj.added += 1;
+        } else if (filterValues[ticket.segments[0].stops.length] && filterValues[ticket.segments[1].stops.length]) {
+          obj.selectedTickets.push(
+            <TicketTemplate
+              key={index}
+              ticket={ticket}
+            />
+          );
+          obj.added += 1;
+        }
+      }
+      return obj;
+    }, { added: 0, selectedTickets: [] }).selectedTickets}
     <Button onClick={handlerOnClickButton}>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ</Button>
   </>;
 }

@@ -1,5 +1,7 @@
-import { TicketRow, TicketCell, TicketCellBold } from "../styles/tickeList";
+import { useMemo } from "react";
+import { TicketCell, TicketCellBold } from "../styles/tickeList";
 import { Segments } from '../interfaces/Ticket';
+import { getArrivalTime, getDepartureTime, getTravelTime } from "../utils/functions";
 
 type Props = {
   segments: Segments
@@ -8,27 +10,42 @@ type Props = {
 export default function TicketDetails({ segments }: Props): JSX.Element {
   const { origin, destination, date, stops, duration } = segments;
 
-  const time = new Date(date);
-  const hour = time.getUTCHours;
+  const departureTime = useMemo(() => getDepartureTime(date), [date]);
 
-  console.log(typeof hour);
+  const travelTime = useMemo(() => getTravelTime(duration), [duration]);
+
+  const arrivalTime = useMemo(() => getArrivalTime(departureTime, travelTime), [departureTime, travelTime]);
 
   return <>
-    <TicketRow>
-      <TicketCell>{origin} - {destination}</TicketCell>
-      <TicketCell>В ПУТИ</TicketCell>
-      <TicketCell>{stops.length}
-        {stops.length == 0 ?
-          " ПЕРЕСАДОК" :
+    <tr>
+      <TicketCell>
+        {origin + " - "}
+        {destination}
+      </TicketCell>
+      <TicketCell>
+        В ПУТИ
+      </TicketCell>
+      <TicketCell>
+        {stops.length}
+        {stops.length == 0 ? " ПЕРЕСАДОК" :
           stops.length == 1 ? " ПЕРЕСАДКА" : " ПЕРЕСАДКИ"}
       </TicketCell>
-    </TicketRow>
-    <TicketRow>
-      <TicketCellBold>10:15 - 08:00</TicketCellBold>
-      <TicketCellBold>{duration > 1440 ? Math.floor(duration / 1440) + 'д ' : ''}
-        {duration > 1440 ? Math.floor((duration - 1440) / 60) + 'ч ' : Math.floor(duration / 60) + 'ч '}
-        {duration % 60 + 'м '}</TicketCellBold>
-      <TicketCellBold>{stops.join(', ')}</TicketCellBold>
-    </TicketRow>
+    </tr>
+    <tr>
+      <TicketCellBold>
+        {departureTime.hour < 10 ? "0" + departureTime.hour : departureTime.hour}:
+        {departureTime.minute < 10 ? "0" + departureTime.minute + " - " : departureTime.minute + " - "}
+        {arrivalTime.hour < 10 ? "0" + arrivalTime.hour : arrivalTime.hour}:
+        {arrivalTime.minute < 10 ? "0" + arrivalTime.minute : arrivalTime.minute}
+      </TicketCellBold>
+      <TicketCellBold>
+        {travelTime.day ? travelTime.day + 'д ' : ''}
+        {travelTime.hour + 'ч '}
+        {travelTime.minute < 10 ? "0" + travelTime.minute + 'м' : travelTime.minute + 'м'}
+      </TicketCellBold>
+      <TicketCellBold>
+        {stops.join(', ')}
+      </TicketCellBold>
+    </tr>
   </>;
 }
