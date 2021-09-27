@@ -24,6 +24,7 @@ export const FilterInput = styled.input`
 export const FilterLabel = styled.label`
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 
   &:last-child {
     padding-bottom: 10px;

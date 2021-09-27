@@ -38,6 +38,7 @@ export const ImgLogo = styled.img`
 export const Button = styled.button`
   display: block;
   user-select: none;
+  cursor: pointer;
   color: white;
   line-height: 50px;
   text-align: center;
