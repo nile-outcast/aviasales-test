@@ -14,4 +14,5 @@ export const Conteiner = styled.div`
   display: flex;
   flex: auto;
   justify-content: center;
+  padding-bottom: 50px;
 `;
