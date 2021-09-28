@@ -4,7 +4,7 @@ interface SortTitleProps {
   readonly isActive: boolean;
 }
 
-export const SortConteiner = styled.div`
+export const SortContainer = styled.div`
   position: relative;
   width: 510px;
   margin-left: 250px;
@@ -26,11 +26,11 @@ export const LiSort = styled.li<SortTitleProps>`
   height: 50px;
   border: 1px solid;
   border-color: ${({ isActive }) => isActive ? '#2196F3' : '#9ABBCE'};
-  border-left: ${({ id }) => { if (id == "fast") return "0"; }};
-  border-right: ${({ id }) => { if (id == "fast") return "0"; }};
+  border-left: ${({ id }) => { if (id === "fast") return "0"; }};
+  border-right: ${({ id }) => { if (id === "fast") return "0"; }};
   border-radius: ${({ id }) => (
-    id == "fast" ? '' : (
-      id == "cheap" ? '5px 0 0 5px' : '0 5px 5px 0'
+    id === "fast" ? '' : (
+      id === "cheap" ? '5px 0 0 5px' : '0 5px 5px 0'
     ))};
   background-color: ${({ isActive }) => isActive ? '#2196F3' : 'white'};
 

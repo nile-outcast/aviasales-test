@@ -1,5 +1,4 @@
-import { HeaderDiv, TagA } from "../components/page";
-import Image from 'next/image';
+import { HeaderDiv, TagA, ImgLogo } from "../components/page";
 import Link from "next/link";
 
 export function Header(): JSX.Element {
@@ -10,11 +9,9 @@ export function Header(): JSX.Element {
         passHref
       >
         <TagA>
-          <Image
+          <ImgLogo
             src="/aslogo.svg"
             alt="aslogo"
-            height="100px"
-            width="100px"
           />
         </TagA>
       </Link>

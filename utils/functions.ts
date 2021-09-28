@@ -35,37 +35,31 @@ export function updateStateFilter(prev: FilterList, id: string, checked: boolean
 
   const massFilter = Object.entries(prev);
 
-  if (id == 'allStop' && checked) {
+  if (id === 'allStop') {
+    return massFilter.reduce((obj, [key]) => {
+      obj[key] = checked;
+      return obj;
+    }, {}) as FilterList;
+  }
+
+  if (id !== 'allStop' && prev.allStop) {
     return massFilter.reduce((obj, [key, value]) => {
-      value = true;
+      if (key === 'allStop') value = false;
+      if (key === id) value = checked;
       obj[key] = value;
       return obj;
     }, {}) as FilterList;
   }
 
-  if (id == 'allStop' && !checked) {
+  if (id !== 'allStop' && !prev.allStop) {
+    const MAX_FILTERS_COUNT = 3;
+    let checkedCount = 0;
+    for (const value of Object.values(prev)) {
+      if (value) checkedCount++;
+    }
     return massFilter.reduce((obj, [key, value]) => {
-      value = false;
-      obj[key] = value;
-      return obj;
-    }, {}) as FilterList;
-  }
-
-  if (id != 'allStop' && prev.allStop) {
-    return massFilter.reduce((obj, [key, value]) => {
-      if (key == 'allStop') value = false;
-      if (key == id) value = checked;
-      obj[key] = value;
-      return obj;
-    }, {}) as FilterList;
-  }
-
-  if (id != 'allStop' && !prev.allStop) {
-    let count = 0;
-    return massFilter.reduce((obj, [key, value]) => {
-      if (value) count++;
-      if (key == 'allStop' && checked && count == 3) value = true;
-      if (key == id) value = checked;
+      if (key === 'allStop' && checked && checkedCount === MAX_FILTERS_COUNT) value = true;
+      if (key === id) value = checked;
       obj[key] = value;
       return obj;
     }, {}) as FilterList;

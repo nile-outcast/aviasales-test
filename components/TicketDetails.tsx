@@ -25,8 +25,8 @@ export function TicketDetails({ segments }: Props): JSX.Element {
       </TicketCell>
       <TicketCell>
         {stops.length}
-        {stops.length == 0 ? " ПЕРЕСАДОК" :
-          stops.length == 1 ? " ПЕРЕСАДКА" : " ПЕРЕСАДКИ"}
+        {stops.length === 0 ? " ПЕРЕСАДОК" :
+          stops.length === 1 ? " ПЕРЕСАДКА" : " ПЕРЕСАДКИ"}
       </TicketCell>
     </tr>
     <tr>

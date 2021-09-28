@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TicketSort } from '../../components/SortConteiner';
+import { TicketSort } from '../../components/SortContainer';
 import { TicketList } from "../../components/TicketList";
 import { Data } from "../../interfaces/List";
 import { Loading, Result } from "../../components/ticketSearch";

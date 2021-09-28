@@ -10,7 +10,12 @@ export const TagA = styled.a`
   margin: 0 auto;
 `;
 
-export const Conteiner = styled.div`
+export const ImgLogo = styled.img`
+  height: 100px;
+  width: 100px;
+`;
+
+export const Container = styled.div`
   display: flex;
   flex: auto;
   justify-content: center;

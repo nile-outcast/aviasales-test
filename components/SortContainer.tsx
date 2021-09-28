@@ -1,7 +1,7 @@
 import { useState, ReactNode, ChangeEvent } from 'react';
 import { TicketFilter } from "./TicketFilter";
 import { SortTitle } from './SortTitle';
-import { SortConteiner } from "./ticketSort";
+import { SortContainer } from "./ticketSort";
 import { FilterList } from "../interfaces/List";
 import { FilterContext, ButtonContext } from "../utils/Context";
 import { updateStateFilter } from "../utils/functions";
@@ -33,7 +33,7 @@ export function TicketSort(props: Props): JSX.Element {
   }
 
   return (
-    <SortConteiner>
+    <SortContainer>
       <TicketFilter
         filter={filter}
         handlerOnChange={handlerOnChangeFilter}
@@ -46,6 +46,6 @@ export function TicketSort(props: Props): JSX.Element {
           {props.children}
         </ButtonContext.Provider>
       </FilterContext.Provider>
-    </SortConteiner>
+    </SortContainer>
   );
 }
