@@ -15,12 +15,6 @@ export interface FilterList {
   threeStop: boolean,
 }
 
-export interface TimeList {
-  day?: number,
-  hour: number,
-  minute: number,
-}
-
 export interface Data {
   tickets: Ticket[];
   isLoading: boolean

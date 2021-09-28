@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { TicketCell, TicketCellBold } from "../components/tickeList";
 import { Segments } from '../interfaces/Ticket';
-import { getArrivalTime, getDepartureTime, getTravelTime } from "../utils/functions";
+import { getTime, getTravelTime } from "../utils/functions";
 
 type Props = {
   segments: Segments
@@ -10,11 +10,9 @@ type Props = {
 export function TicketDetails({ segments }: Props): JSX.Element {
   const { origin, destination, date, stops, duration } = segments;
 
-  const departureTime = useMemo(() => getDepartureTime(date), [date]);
+  const time = useMemo(() => getTime(date, duration), [date, duration]);
 
   const travelTime = useMemo(() => getTravelTime(duration), [duration]);
-
-  const arrivalTime = useMemo(() => getArrivalTime(departureTime, travelTime), [departureTime, travelTime]);
 
   return <>
     <tr>
@@ -33,15 +31,11 @@ export function TicketDetails({ segments }: Props): JSX.Element {
     </tr>
     <tr>
       <TicketCellBold>
-        {departureTime.hour < 10 ? "0" + departureTime.hour : departureTime.hour}:
-        {departureTime.minute < 10 ? "0" + departureTime.minute + " - " : departureTime.minute + " - "}
-        {arrivalTime.hour < 10 ? "0" + arrivalTime.hour : arrivalTime.hour}:
-        {arrivalTime.minute < 10 ? "0" + arrivalTime.minute : arrivalTime.minute}
+        {time.departureTime + " - "}
+        {time.arrivalTime}
       </TicketCellBold>
       <TicketCellBold>
-        {travelTime.day ? travelTime.day + 'д ' : ''}
-        {travelTime.hour + 'ч '}
-        {travelTime.minute < 10 ? "0" + travelTime.minute + 'м' : travelTime.minute + 'м'}
+        {travelTime}
       </TicketCellBold>
       <TicketCellBold>
         {stops.join(', ')}

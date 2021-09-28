@@ -26,7 +26,7 @@ export function SortTitle(props: Props): JSX.Element {
           <LiSort
             id={oper.id}
             onClick={props.handlerOnClick}
-            className={(router.query.id == oper.id) ? "active" : ""}
+            isActive={(router.query.id == oper.id) ? true : false}
           >
             {oper.checkName}
           </LiSort>

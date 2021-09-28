@@ -57,7 +57,7 @@ export function TicketList({ tickets }: Props): JSX.Element {
     {sortTickets.map((ticket, index) => {
       return (
         <TicketTemplate
-          key={index}
+          key={`${index}-${ticket.carrier}-${ticket.price}`}
           ticket={ticket}
         />
       );

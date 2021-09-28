@@ -1,5 +1,6 @@
 import { Ticket } from '../interfaces/Ticket';
-import { Data, FilterList, TimeList } from "../interfaces/List";
+import { Data, FilterList } from "../interfaces/List";
+import { add, format } from "date-fns";
 
 export function getSortTickets(path: string, tickets: Ticket[]): Ticket[] {
   if (path === 'cheap') {
@@ -71,55 +72,33 @@ export function updateStateFilter(prev: FilterList, id: string, checked: boolean
   }
 }
 
-export function getDepartureTime(date: string): TimeList {
-  const departureTime = {
-    hour: 0,
-    minute: 0,
-  };
-  const time = new Date(date);
-  departureTime.hour = time.getHours();
-  departureTime.minute = time.getMinutes();
-  return departureTime;
-}
-
-export function getTravelTime(duration: number): TimeList {
-  const travelTime = {
-    day: 0,
-    hour: 0,
-    minute: 0,
-  };
+export function getTravelTime(duration: number): string {
+  let days = '';
+  let hours = '';
+  let minutes = '';
 
   if (duration > 1440) {
-    travelTime.day = Math.floor(duration / 1440);
-    travelTime.hour = Math.floor((duration - 1440) / 60);
+    days = Math.floor(duration / 1440) + "д ";
+    hours = Math.floor((duration - 1440) / 60) + "ч ";
   } else {
-    travelTime.hour = Math.floor(duration / 60);
+    hours = Math.floor(duration / 60) + "ч ";
   }
-  travelTime.minute = duration % 60;
+  minutes = duration % 60 < 10 ? "0" + duration % 60 + "м" : (duration % 60) + "м";
 
-  return travelTime;
+  return days + hours + minutes;
 }
 
-export function getArrivalTime(departureTime: TimeList, travelTime: TimeList): TimeList {
-  const arrivalTime = {
-    hour: 0,
-    minute: 0,
-  };
+type Time = {
+  departureTime: string,
+  arrivalTime: string,
+};
 
-  if (departureTime.minute + travelTime.minute > 60) {
-    arrivalTime.minute = departureTime.minute + travelTime.minute - 60;
-    arrivalTime.hour += 1;
-  } else {
-    arrivalTime.minute = departureTime.minute + travelTime.minute;
-  }
-
-  if (arrivalTime.hour + departureTime.hour + travelTime.hour > 24) {
-    arrivalTime.hour += departureTime.hour + travelTime.hour - 24;
-  } else {
-    arrivalTime.hour += departureTime.hour + travelTime.hour;
-  }
-
-  return arrivalTime;
+export function getTime(date: string, duration: number): Time {
+  const time = new Date(date);
+  const timeFormat = 'hh:mm';
+  const departureTime = format(time, timeFormat);
+  const arrivalTime = format(add(time, { minutes: duration }), timeFormat);
+  return { departureTime, arrivalTime };
 }
 
 type Path = {
