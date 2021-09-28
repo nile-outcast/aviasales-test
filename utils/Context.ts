@@ -1,4 +1,4 @@
 import React from "react";
 
-export const filterContext = React.createContext({});
-export const buttonContext = React.createContext([]);
+export const FilterContext = React.createContext({});
+export const ButtonContext = React.createContext([]);

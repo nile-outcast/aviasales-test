@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const HeaderDiv = styled.div`
   padding: 50px 0;
 `;
-
-export const ImgLogo = styled.img`
+export const TagA = styled.a`
   display: block;
-  height: 100px ;
+  height: 100px;
+  width: 100px;
   margin: 0 auto;
 `;
 

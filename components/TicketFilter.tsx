@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { FilterInput, FilterLabel, FilterDiv, FilterTitle, FilterSpan } from "../styles/filter";
+import { FilterInput, FilterLabel, FilterDiv, FilterTitle, FilterSpan } from "./filter";
 import { filterList } from "../utils/lists";
 import { List, FilterList } from "../interfaces/List";
 
@@ -8,7 +8,7 @@ type Props = {
   handlerOnChange(even: ChangeEvent<HTMLInputElement>): void,
 };
 
-export default function Filter({ filter, handlerOnChange }: Props): JSX.Element {
+export function TicketFilter({ filter, handlerOnChange }: Props): JSX.Element {
 
   return (
     <FilterDiv>

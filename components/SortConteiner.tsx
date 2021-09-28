@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef, ReactNode, ChangeEvent } from 'react';
-import Filter from "./Filter";
-import SortTitle from './SortTitle';
-import { SortConteiner } from "../styles/ticketSort";
+import { useState, ReactNode, ChangeEvent } from 'react';
+import { TicketFilter } from "./TicketFilter";
+import { SortTitle } from './SortTitle';
+import { SortConteiner } from "./ticketSort";
 import { FilterList } from "../interfaces/List";
-import { filterContext, buttonContext } from "../utils/Context";
+import { FilterContext, ButtonContext } from "../utils/Context";
 import { updateStateFilter } from "../utils/functions";
 
 type Props = {
   children: ReactNode
 };
 
-export default function TicketSort(props: Props): JSX.Element {
+export function TicketSort(props: Props): JSX.Element {
 
   const [filter, setFilter] = useState<FilterList>({
     withoutStop: false,
@@ -32,27 +32,20 @@ export default function TicketSort(props: Props): JSX.Element {
     setTicketsCount(() => 5);
   }
 
-  const refClick = useRef<HTMLLIElement>();
-
-  useEffect(() => {
-    refClick.current.click();
-  }, []);
-
   return (
     <SortConteiner>
-      <Filter
+      <TicketFilter
         filter={filter}
         handlerOnChange={handlerOnChangeFilter}
       />
       <SortTitle
         handlerOnClick={handlerOnClickInput}
-        refClick={refClick}
       />
-      <filterContext.Provider value={filter}>
-        <buttonContext.Provider value={[ticketsCount, setTicketsCount]}>
+      <FilterContext.Provider value={filter}>
+        <ButtonContext.Provider value={[ticketsCount, setTicketsCount]}>
           {props.children}
-        </buttonContext.Provider>
-      </filterContext.Provider>
+        </ButtonContext.Provider>
+      </FilterContext.Provider>
     </SortConteiner>
   );
 }

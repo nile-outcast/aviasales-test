@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { TicketCell, TicketCellBold } from "../styles/tickeList";
+import { TicketCell, TicketCellBold } from "../components/tickeList";
 import { Segments } from '../interfaces/Ticket';
 import { getArrivalTime, getDepartureTime, getTravelTime } from "../utils/functions";
 
@@ -7,7 +7,7 @@ type Props = {
   segments: Segments
 };
 
-export default function TicketDetails({ segments }: Props): JSX.Element {
+export function TicketDetails({ segments }: Props): JSX.Element {
   const { origin, destination, date, stops, duration } = segments;
 
   const departureTime = useMemo(() => getDepartureTime(date), [date]);

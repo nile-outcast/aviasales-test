@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import TicketSort from '../../components/TicketSort';
-import TicketList from "../../components/TicketList";
+import { TicketSort } from '../../components/SortConteiner';
+import { TicketList } from "../../components/TicketList";
 import { Data } from "../../interfaces/List";
-import { Loading, Result } from "../../styles/ticketSearch";
+import { Loading, Result } from "../../components/ticketSearch";
 import { getTickets, numberToString } from "../../utils/functions";
 
 export default function TicketSearch(): JSX.Element {
@@ -12,12 +12,12 @@ export default function TicketSearch(): JSX.Element {
     isLoading: true,
   });
 
-  const [className, setClassName] = useState<string>('');
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     getTickets(setData);
-    setClassName(() => 'visible');
-    setTimeout(() => setClassName(() => ''), 5000);
+    setIsVisible(() => true);
+    setTimeout(() => setIsVisible(() => false), 5000);
   }, []);
 
   return (
@@ -25,14 +25,14 @@ export default function TicketSearch(): JSX.Element {
       {(isLoading) ?
         <Loading>L O A D I N G . . .</Loading> :
         <>
-          <Result className={className}>
-            Всего найдено {numberToString(tickets.length)} билетов
-          </Result>
+          {isVisible && (
+            <Result>
+              Всего найдено {numberToString(tickets.length)} билетов
+            </Result>
+          )}
           <TicketList tickets={tickets} />
         </>
       }
     </TicketSort>
   );
 }
-
-

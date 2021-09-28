@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { useContext, useMemo } from "react";
-import TicketTemplate from './TicketTemplate';
-import { Button } from "../styles/tickeList";
-import { filterContext, buttonContext } from "../utils/Context";
+import { TicketTemplate } from './TicketTemplate';
+import { Button } from "../components/tickeList";
+import { FilterContext, ButtonContext } from "../utils/Context";
 import { getSortTickets } from "../utils/functions";
 import { Ticket } from '../interfaces/Ticket';
 
@@ -10,44 +10,60 @@ type Props = {
   tickets: Ticket[];
 };
 
-export default function TicketList({ tickets }: Props): JSX.Element {
+export function TicketList({ tickets }: Props): JSX.Element {
 
-  const filter = useContext(filterContext);
+  const filter = useContext(FilterContext);
   const filterValues = useMemo(() => Object.values(filter), [filter]);
 
-  const router = useRouter();
-  const path = router.query.id as string;
-  const sortTickets: Ticket[] = useMemo(() => getSortTickets(path, tickets), [path, tickets]);
-
-  const [ticketsCount, setTicketsCount] = useContext(buttonContext);
+  const [ticketsCount, setTicketsCount] = useContext(ButtonContext);
 
   function handlerOnClickButton(): void {
     setTicketsCount((prev: number) => prev + 5);
   }
 
-  return <>
-    {sortTickets.reduce((obj, ticket, index) => {
-      if (obj.added < ticketsCount) {
-        if (!filterValues.includes(true)) {
-          obj.selectedTickets.push(
-            < TicketTemplate
-              key={index}
-              ticket={ticket}
-            />
-          );
-          obj.added += 1;
-        } else if (filterValues[ticket.segments[0].stops.length] && filterValues[ticket.segments[1].stops.length]) {
-          obj.selectedTickets.push(
-            <TicketTemplate
-              key={index}
-              ticket={ticket}
-            />
-          );
-          obj.added += 1;
-        }
+  const router = useRouter();
+  const path = router.query.id as string;
+
+  const sortTickets: Ticket[] = useMemo(() => {
+    const sortedTickets = getSortTickets(path, tickets);
+    const result = [];
+    let counter = 0;
+
+    sortedTickets.forEach((ticket) => {
+      if (counter >= ticketsCount) {
+        return;
       }
-      return obj;
-    }, { added: 0, selectedTickets: [] }).selectedTickets}
-    <Button onClick={handlerOnClickButton}>ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ</Button>
+
+      if (!filterValues.includes(true)) {
+        result.push(ticket);
+        return counter += 1;
+      }
+
+      const [firstSegment, secondSegment] = ticket.segments;
+      const hasFirstSegmentFilter = filterValues[firstSegment.stops.length];
+      const hasSecondSegmentFilter = filterValues[secondSegment.stops.length];
+
+      if (hasFirstSegmentFilter && hasSecondSegmentFilter) {
+        result.push(ticket);
+        return counter += 1;
+      }
+    });
+
+    return result;
+
+  }, [path, tickets, filterValues, ticketsCount]);
+
+  return <>
+    {sortTickets.map((ticket, index) => {
+      return (
+        <TicketTemplate
+          key={index}
+          ticket={ticket}
+        />
+      );
+    })}
+    <Button onClick={handlerOnClickButton}>
+      ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ
+    </Button>
   </>;
 }

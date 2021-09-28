@@ -1,13 +1,13 @@
 import { numberToString, getUrl } from "../utils/functions";
-import { TicketTable, TicketCellPrice, ImgLogo } from "../styles/tickeList";
+import { TicketTable, TicketCellPrice, ImgLogo } from "./tickeList";
 import { Ticket } from '../interfaces/Ticket';
-import TicketDetails from './TicketDetails';
+import { TicketDetails } from './TicketDetails';
 
 type Props = {
   ticket: Ticket;
 };
 
-export default function TicketTemplate({ ticket }: Props): JSX.Element {
+export function TicketTemplate({ ticket }: Props): JSX.Element {
 
   return (
     <TicketTable>

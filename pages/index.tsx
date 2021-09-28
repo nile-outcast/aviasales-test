@@ -1,5 +1,5 @@
-import TicketSort from '../components/TicketSort';
-import { Button } from "../styles/tickeList";
+import { TicketSort } from '../components/SortConteiner';
+import { Button } from "../components/tickeList";
 
 export default function Home(): JSX.Element {
 
