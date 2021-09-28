@@ -95,7 +95,7 @@ type Time = {
 
 export function getTime(date: string, duration: number): Time {
   const time = new Date(date);
-  const timeFormat = 'hh:mm';
+  const timeFormat = 'HH:mm';
   const departureTime = format(time, timeFormat);
   const arrivalTime = format(add(time, { minutes: duration }), timeFormat);
   return { departureTime, arrivalTime };
