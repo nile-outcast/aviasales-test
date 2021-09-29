@@ -1,5 +1,5 @@
 import { Ticket } from '../interfaces/Ticket';
-import { Data, FilterList } from "../interfaces/List";
+import { FilterList } from "../interfaces/List";
 import { add, format } from "date-fns";
 
 export function getSortTickets(path: string, tickets: Ticket[]): Ticket[] {
@@ -99,47 +99,25 @@ type Path = {
   searchId: string
 };
 
-export async function getTickets(
-  setData: (arg0: {
-    (prev: Data): Data;
-    (prev: Data): Data;
-    (prev: Data): Data;
-  }) => void
-): Promise<void> {
-
+export async function getTickets(): Promise<Ticket[]> {
   const resPath = await fetch('https://front-test.beta.aviasales.ru/search');
-  const path = await resPath.json();
+  const path: Path = await resPath.json();
 
-  const getData = async (path: Path) => {
+  let allowed = true;
+  let tickets: Ticket[] = [];
+
+  while (allowed) {
+    const prevTickets = tickets;
     try {
       const res = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${path.searchId}`);
-
-      if (!res.ok) {
-        setData((prev: Data) => ({
-          tickets: prev.tickets,
-          isLoading: true,
-        }));
-        await getData(path);
-      }
-
       const data = await res.json();
-
+      tickets = prevTickets.concat(data.tickets);
       if (data.stop) {
-        setData((prev: Data) => ({
-          tickets: prev.tickets.concat(data.tickets),
-          isLoading: false,
-        }));
-      } else {
-        setData((prev: Data) => ({
-          tickets: prev.tickets.concat(data.tickets),
-          isLoading: true,
-        }));
-        await getData(path);
+        allowed = false;
       }
     } catch (err) {
       console.log('Поймал!' + err);
     }
-  };
-
-  await getData(path);
+  }
+  return tickets;
 }
