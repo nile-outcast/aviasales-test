@@ -104,14 +104,13 @@ export async function getTickets(): Promise<Ticket[]> {
   const path: Path = await resPath.json();
 
   let allowed = true;
-  let tickets: Ticket[] = [];
+  const tickets: Ticket[] = [];
 
   while (allowed) {
-    const prevTickets = tickets;
     try {
       const res = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${path.searchId}`);
       const data = await res.json();
-      tickets = prevTickets.concat(data.tickets);
+      tickets.push(...data.tickets);
       if (data.stop) {
         allowed = false;
       }
